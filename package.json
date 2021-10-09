@@ -7,5 +7,23 @@
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.2.0",
     "request-promise": "^4.2.6"
-  }
+  },
+  "name": "septa-checker",
+  "description": "Discord bot crawler that reads the SEPTA TrainView feed, notifying a channel on Discord of delays from a list of user-specified trains at regular intervals.",
+  "version": "1.0.0",
+  "main": "main.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbrugel/SEPTA-Checker.git"
+  },
+  "author": "sbrugel",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/sbrugel/SEPTA-Checker/issues"
+  },
+  "homepage": "https://github.com/sbrugel/SEPTA-Checker#readme"
 }
