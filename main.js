@@ -4,7 +4,6 @@ const { MessageEmbed, Client, Collection, Intents } = require('discord.js');
 const cron = require("cron");
 const rp = require('request-promise');
 const cheerio = require('cheerio');
-const { channelMention } = require('@discordjs/builders');
 const fs = require('fs');
 const url = 'http://trainview.septa.org/';
 
