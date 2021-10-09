@@ -11,7 +11,7 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	commands.push(command.data.toJSON());
 }
-commands.push(new SlashCommandBuilder().setName('refresh').setDescription('Refresh the train view manually. (By default, refreshes every ~2 min)'))
+commands.push(new SlashCommandBuilder().setName('refresh').setDescription('Refresh the train view manually. (By default, refreshes every ~2 min)')) //also add this command since its functionality is integrated into main.js
 
 const rest = new REST({ version: '9' }).setToken(TOKEN);
 

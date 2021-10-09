@@ -17,11 +17,11 @@ const client = new Discord.Client({
 });
 
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js')); //get all command files
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-	client.commands.set(command.data.name, command);
+	client.commands.set(command.data.name, command); //register all commands
 }
 
 client.login(config.TOKEN);
@@ -34,16 +34,16 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+	if (!interaction.isCommand()) return; //not a command
 
 	const command = client.commands.get(interaction.commandName);
 
 	if (interaction.commandName === 'refresh') {
 		main();
-		return interaction.reply({ content: 'Refreshed!', ephemeral: true });;
+		return interaction.reply({ content: 'Refreshed!', ephemeral: true });; //ephemeral means that the interaction is kept to the sender only
 	}
 
-	if (!command) return;
+	if (!command) return; //not a command
 
 	try {
 		await command.execute(interaction);
@@ -70,8 +70,8 @@ async function main() {
 				printstring = '';
 			}
 		}
-		if (printstring != '') { //continue adding to the string
-			if (iteration == 2) { //dest
+		if (printstring != '') { //continue adding to the string since the train is valid
+			if (iteration == 2) { //destination
 				printstring += $(element).text() + ' is currently running ';
 			}
 			else if (iteration == 3) { //delay
@@ -96,7 +96,7 @@ async function main() {
 	if (toPrint.length == 0) { //no updates
 		toPrint = ["No train updates at this time for the services you have specified."];
 	}
-	if (config.trains.length == 0) { //no updates
+	if (config.trains.length == 0) { //introduction message or if the train list is empty
 		toPrint = ["Hello! This is a feed that tracks the delays of SEPTA services you specify. Please use /addtrain [train number] to start tracking trains. For information on other commands, type in / and then click my profile picture on the left bar."];
 	}
 
@@ -104,7 +104,7 @@ async function main() {
 	let channel = guild.channels.cache.get(config.SENDTO);
 
 	//this took me way too long to figure out, thanks discord.js update
-	channel.messages.fetch({limit: 1}).then(messages => {
+	channel.messages.fetch({limit: 1}).then(messages => { //get only the last message sent
 		let lm = messages.first()
 		if (lm == null || !lm.author.bot) { //no message at all or last message not by bot
 			const trainEmbed = new MessageEmbed()

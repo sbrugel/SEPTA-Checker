@@ -1,8 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const config = require('../config.json');
 
-var name = 'addtrain'
-var desc = 'Add a train to the tracker.', opt = 'toadd', optdesc = 'The train to add'
+var name = 'addtrain', desc = 'Add a train to the tracker.', opt = 'toadd', optdesc = 'The train to add'
 
 module.exports = {
 	data: new SlashCommandBuilder()
