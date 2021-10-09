@@ -2,7 +2,9 @@
 This project is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.txt). This basically means you can redistribute this product with modification, for patent or private use, as long as you accredit me and keep the license on your derivation of the project. You may NOT distribute the code as closed-source. Please follow the aforementioned link for more information.
 
 ## About
-This is a Discord bot that scrapes SEPTA's trainview website at regular intervals and returns delays for user-inputted train services (3 or 4 digit numbers) in the form of a rich embed.
+![Discord_ifgEFGqQBX](https://user-images.githubusercontent.com/58154576/136670970-471818c9-f134-44a7-a2c1-159716abf084.png)
+
+This is a Discord bot that scrapes [SEPTA's TrainView](http://trainview.septa.org/) at regular intervals and returns delays for user-inputted train services (3 or 4 digit numbers) in the form of a rich embed. Its feed updates automatically every two minutes.
 
 This bot is intended to be used in one server per host, posting messages to a locked channel, so as it is the only user that can post in the channel. *Using this bot in a public channel or one that is unlocked to various people may be problematic.*
 
