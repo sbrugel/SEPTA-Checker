@@ -1,0 +1,8 @@
+{
+    "TOKEN": "YOUR_BOT_TOKEN",
+    "CLIENT_ID": "YOUR_BOT_ID",
+    "GUILD_ID": "YOUR_SERVER_ID",
+    "NAME": "Silverliner IV",
+    "SENDTO": "YOUR_CHANNEL_ID",
+    "trains": ["YOUR TRAINS HERE", "EACH SERVICE NUMBER", "SEPARATED BY COMMAS"]
+}
