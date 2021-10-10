@@ -6,13 +6,13 @@
     "cron": "^1.8.2",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.2.0",
+    "request": "^2.88.2",
     "request-promise": "^4.2.6"
   },
   "name": "septa-checker",
   "description": "Discord bot crawler that reads the SEPTA TrainView feed, notifying a channel on Discord of delays from a list of user-specified trains at regular intervals.",
   "version": "1.0.0",
   "main": "main.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
