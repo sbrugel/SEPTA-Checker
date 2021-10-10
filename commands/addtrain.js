@@ -13,12 +13,12 @@ module.exports = {
                 .setRequired(true)),
 	async execute(interaction) {
         const { options } = interaction
-        if (config.trains.includes(options.getString('toadd'))) {
-            return interaction.reply({content: options.getString('toadd') + ' is already being tracked!', ephemeral: true});
+        if (config.trains.includes(options.getString(opt))) {
+            return interaction.reply({content: options.getString(opt) + ' is already being tracked!', ephemeral: true});
         } else {
-            config.trains.push(options.getString('toadd'));
+            config.trains.push(options.getString(opt));
             config.trains.sort(); //so it's in numerical order
-            return interaction.reply({content: 'Added ' + options.getString('toadd') + ' to the tracker. Its status will appear the next time the information board refreshes.' +
+            return interaction.reply({content: 'Added ' + options.getString(opt) + ' to the tracker. Its status will appear the next time the information board refreshes.' +
                 '\nThis bot is now tracking the following trains: ' + config.trains.join(', '), ephemeral: true});
         }
 	},

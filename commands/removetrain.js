@@ -13,11 +13,11 @@ module.exports = {
                 .setRequired(true)),
 	async execute(interaction) {
         const { options } = interaction
-        if (config.trains.includes(options.getString(option))) {
-            config.trains.splice(config.trains.indexOf(options.getString(option)), 1)
-            return interaction.reply({content: options.getString(option) + ' has been removed from the tracking list.\nThis bot is now tracking the following trains: ' + config.trains.join(', '), ephemeral: true});
+        if (config.trains.includes(options.getString(opt))) {
+            config.trains.splice(config.trains.indexOf(options.getString(opt)), 1)
+            return interaction.reply({content: options.getString(opt) + ' has been removed from the tracking list.\nThis bot is now tracking the following trains: ' + config.trains.join(', '), ephemeral: true});
         } else {
-            return interaction.reply({content: options.getString(option) + ' is not in the tracking list.', ephemeral: true});
+            return interaction.reply({content: options.getString(opt) + ' is not in the tracking list.', ephemeral: true});
         }
 	},
 };
