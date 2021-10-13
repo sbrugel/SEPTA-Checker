@@ -1,5 +1,5 @@
 # SEPTA-Checker
-This project is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.txt). This basically means you can redistribute this product with modification, for patent or private use, as long as you accredit me and keep the license on your derivation of the project. You may NOT distribute the code as closed-source. Please follow the aforementioned link for more information.
+This project is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.txt). This basically means you can redistribute this product with modification, for patent or private use, as long as you accredit all contributors and keep the license on your derivation of the project. You may NOT distribute the code as closed-source. Please follow the aforementioned link for more information.
 
 ## About
 ![Discord_ifgEFGqQBX](https://user-images.githubusercontent.com/58154576/136670970-471818c9-f134-44a7-a2c1-159716abf084.png)
@@ -17,7 +17,7 @@ Once you have downloaded the source, follow these instructions. (Most of these a
 4. Replace "YOUR_BOT_ID" with the Application ID, found in the General Information section with a Copy button below it.
 5. Replace "YOUR_SERVER_ID" with the ID of the server you will add the bot to.
 6. Replace "YOUR_CHANNEL_ID" with the ID of the channel you would like the bot to send messages to. (Refer to the About section for important info on this)
-- 6.5. (OPTIONAL) Replace "["YOUR TRAINS HERE", "EACH SERVICE NUMBER", "SEPARATED BY COMMAS"]" with an array of train numbers you would like tracked right when the bot launches. Keep the double quotes AND the square brackets. Remember that this is not required as you can modify this list through bot commands.
+- 6.5. (OPTIONAL) Replace "["YOUR TRAINS HERE", "EACH SERVICE NUMBER", "SEPARATED BY COMMAS"]" with an array of train numbers you would like tracked right when the bot launches. Keep the double quotes AND the square brackets. Remember that this is not required as you can modify this list through bot commands. **Note that this updates with every train added so the list does not clear if the bot goes down.
 7. To add the bot to the server, go to the OAuth2 section of the developer's page. Scroll to the bottom. Under Scopes, you must tick 'bot' and 'applications.commands'. Under Bot Permissions, tick 'Administrator'.
 8. This gives you a link to add the bot to any server you manage. Follow Discord's on screen instructions after copying this link into your browser.
 9. Run 'startbot.bat' and the bot should go online.
