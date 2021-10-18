@@ -24,10 +24,11 @@ module.exports = {
             return interaction.followUp({content: `${options.getString(opt)} is already being tracked!`, ephemeral: true});
         } else {
             config.trains.push(options.getString(opt));
-            config.trains.sort(); //so it's in numerical order
+            config.stations.push(null);
+            updateConfig(config);
             return interaction.followUp({
                 content: `Added ${options.getString(opt)} to the tracker. Its status will appear the next time the information board refreshes.${''
-                }\nThis bot is now tracking the following trains: ${config.trains.join(', ')}`,
+                }\nThis bot is now tracking the following trains: ${config.trains.sort().join(', ')}`,
                 ephemeral: true
             });
         }

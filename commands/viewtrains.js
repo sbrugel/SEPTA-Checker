@@ -11,7 +11,15 @@ module.exports = {
         if (config.trains.length == 0) {
             return interaction.reply({content:'This bot is not tracking any trains. Use /addtrain [train number] to add a train to track!', ephemeral: true});
         } else {
-            return interaction.reply({content: 'This bot is tracking the following trains: ' + config.trains.join(', '), ephemeral: true});
+            var toprint = [];
+            for (var i = 0; i < config.trains.length; i++) {
+                if (config.stations[i] != null) { //a station is also being tracked for this train
+                    toprint.push(config.trains[i] + ' (ETA is being tracked at ' + config.stations[i] + ')');
+                } else {
+                    toprint.push(config.trains[i])
+                }
+            }
+            return interaction.reply({content: 'This bot is tracking the following trains: ' + toprint.sort().join(', '), ephemeral: true});
         }
 	},
 };
