@@ -18,7 +18,7 @@ Once you have downloaded the source, follow these instructions. (Most of these a
 5. Replace "YOUR_SERVER_ID" with the ID of the server you will add the bot to.
 6. Replace "YOUR_CHANNEL_ID" with the ID of the channel you would like the bot to send messages to. (Refer to the About section for important info on this)
 - 6.5. (OPTIONAL) Replace "["YOUR TRAINS HERE", "EACH SERVICE NUMBER", "SEPARATED BY COMMAS"]" with an array of train numbers you would like tracked right when the bot launches. Keep the double quotes AND the square brackets. Remember that this is not required as you can modify this list through bot commands. **Note that this updates with every train added so the list does not clear if the bot goes down.
-7. To add the bot to the server, go to the OAuth2 section of the developer's page. Scroll to the bottom. Under Scopes, you must tick 'bot' and 'applications.commands'. Under Bot Permissions, tick 'Administrator'.
+7. To add the bot to the server, go to the OAuth2 section of the developer's page. Scroll to the bottom. Under Scopes, you must tick 'bot' and 'applications.commands'. Under Bot Permissions, tick 'Administrator'. Also ensure you enable BOTH privileged intents under the Bots section.
 8. This gives you a link to add the bot to any server you manage. Follow Discord's on screen instructions after copying this link into your browser.
 9. Run 'startbot.bat' and the bot should go online.
 
