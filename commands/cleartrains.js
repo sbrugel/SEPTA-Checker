@@ -19,6 +19,7 @@ module.exports = {
             return interaction.followUp({content:'This bot is not tracking any trains.', ephemeral: true});
         } else {
             config.trains = [];
+            config.stations = [];
             updateConfig(config);
             return interaction.followUp({content:'The list of trains being tracked has been cleared.', ephemeral: true});
         }

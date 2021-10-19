@@ -25,14 +25,24 @@ module.exports = {
             return interaction.followUp({content: `Train no. ${options.getString(opt)} is already being tracked!`, ephemeral: true});
         } else {
             config.trains.push(options.getString(opt));
-            config.trains.sort(); //so it's in numerical order
+            config.stations.push(null); //add an empty station, can be replaced through addstation command
+            updateConfig(config);
+            
+            var toprint = [];
+            for (var i = 0; i < config.trains.length; i++) {
+                if (config.stations[i] != null) { //a station is also being tracked for this train
+                    toprint.push(config.trains[i] + ' (ETA is being tracked at ' + config.stations[i] + ')');
+                } else {
+                    toprint.push(config.trains[i])
+                }
+            }
             const embed = new MessageEmbed()
                 .setTitle(`Added ${options.getString(opt)} to the tracker.`)
                 .setFooter('Your new train\'s status will appear the next time the information board refreshes.')
                 .setColor('GREEN')
                 .addField(
                     'Currently tracked trains',
-                    config.trains.join(', '),
+                    toprint.sort().join(', '),
                     false
                 );
             return interaction.followUp({

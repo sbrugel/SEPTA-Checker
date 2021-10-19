@@ -22,15 +22,26 @@ module.exports = {
 
         const { options } = interaction
         if (config.trains.includes(options.getString(opt))) {
-            config.trains.splice(config.trains.indexOf(options.getString(opt)), 1);
+            var toremove = config.trains.indexOf(options.getString(opt));
+            config.trains.splice(toremove, 1);
+            config.stations.splice(toremove, 1);
             updateConfig(config);
+
+            var toprint = [];
+            for (var i = 0; i < config.trains.length; i++) {
+                if (config.stations[i] != null) { //a station is also being tracked for this train
+                    toprint.push(config.trains[i] + ' (ETA is being tracked at ' + config.stations[i] + ')');
+                } else {
+                    toprint.push(config.trains[i])
+                }
+            }
             const embed = new MessageEmbed()
                 .setTitle(`${options.getString(opt)} has been removed from the tracking list.`)
                 .setFooter('This update will be visible the next time the information board refreshes.')
                 .setColor('RED')
                 .addField(
                     'Currently tracked trains',
-                    config.trains.join(', '),
+                    toprint.sort().join(', '),
                     false
                 );
             return interaction.followUp({  // Format strings are amazing.
