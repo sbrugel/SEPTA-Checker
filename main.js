@@ -53,10 +53,10 @@ client.on('interactionCreate', async interaction => {
 });
 
 async function main() {
-    const result = await rp.get(url);
-    const $ = cheerio.load(result);
+    var result = await rp.get(url);
+    var $ = cheerio.load(result);
 	
-	var iteration = 0, printstring = '', toPrint = [];
+	var iteration = 0, printstring = '', toPrint = [], trainOrder = [];
 	var run = 0; //increment through every cell of the table
 
 	$("table > tbody > tr > td").each((index, element) => { //run through every cell of the table
@@ -65,6 +65,7 @@ async function main() {
 		if (iteration == 1) { //train number
 			if (config.trains.indexOf($(element).text()) != -1) {
 				printstring = 'Train no. ' + config.trains[config.trains.indexOf($(element).text())] + ' going to ';
+				trainOrder.push(config.trains[config.trains.indexOf($(element).text())])
 			} else {
 				printstring = '';
 			}
@@ -83,6 +84,36 @@ async function main() {
 		}
 		run++;
     });
+
+	for (var i = 0; i < config.trains.length; i++) {
+		if (config.stations[i] != null) { //the train in question is being tracked at a valid station
+			result = await rp.get("http://trainview.septa.org/" + config.trains[i]);
+			$ = cheerio.load(result);
+			
+			iteration = 0;
+			run = 0; //increment through every cell of the table
+
+			var stationname = null, foundstation = false, donelooping = false;
+
+			$("table > tbody > tr > td").each((index, element) => { //run through every cell of the table
+				if (!donelooping) { //exit the loop if station has been found
+					iteration = run % 5; //0, 1, 2, 3, or 4
+					//we are only looking for iterations 0 and 3 (station name, estimated arrival)
+					if (iteration == 0) { //station name
+						if (config.stations[i].toLowerCase().includes($(element).text().toLowerCase())) {
+							foundstation = true;
+							stationname = $(element).text();
+						}
+					}
+					if (foundstation && iteration == 3) {
+						toPrint[trainOrder.indexOf(config.trains[i])] += " (estimated to arrive at " + stationname + " at: " + $(element).text() + ")";
+						donelooping = true;
+					}
+					run++;
+				}
+			});
+		}
+	}
 
 	var today = new Date();
 	var hr = convertTime(today.getHours()), min = convertTime(today.getMinutes()), sec = convertTime(today.getSeconds());

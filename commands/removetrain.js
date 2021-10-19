@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { isOwner, updateConfig } = require('../utils/utils');
+const { isOwner, updateConfig, getPrintForEmbed } = require('../utils/utils');
 const config = require('../config.json');
 const { MessageEmbed } = require('discord.js');
 
@@ -27,27 +27,31 @@ module.exports = {
             config.stations.splice(toremove, 1);
             updateConfig(config);
 
-            var toprint = [];
-            for (var i = 0; i < config.trains.length; i++) {
-                if (config.stations[i] != null) { //a station is also being tracked for this train
-                    toprint.push(config.trains[i] + ' (ETA is being tracked at ' + config.stations[i] + ')');
-                } else {
-                    toprint.push(config.trains[i])
-                }
+            try {
+                var toprint = getPrintForEmbed();
+                const embed = new MessageEmbed()
+                    .setTitle(`${options.getString(opt)} has been removed from the tracking list.`)
+                    .setFooter('This update will be visible the next time the information board refreshes.')
+                    .setColor('RED')
+                    .addField(
+                        'Currently tracked trains',
+                        toprint.sort().join(', '),
+                        false
+                    );
+                return interaction.followUp({  // Format strings are amazing.
+                    embeds: [embed],
+                    ephemeral: true
+                });
+            } catch (error) {
+                var toprint = getPrintForEmbed();
+                const embed = new MessageEmbed()
+                    .setTitle(`${options.getString(opt)} has been removed from the tracking list.`)
+                    .setDescription(`The list is now empty.`)
+                return interaction.followUp({  // Format strings are amazing.
+                    embeds: [embed],
+                    ephemeral: true
+                });
             }
-            const embed = new MessageEmbed()
-                .setTitle(`${options.getString(opt)} has been removed from the tracking list.`)
-                .setFooter('This update will be visible the next time the information board refreshes.')
-                .setColor('RED')
-                .addField(
-                    'Currently tracked trains',
-                    toprint.sort().join(', '),
-                    false
-                );
-            return interaction.followUp({  // Format strings are amazing.
-                embeds: [embed],
-                ephemeral: true
-            });
         } else {
             return interaction.followUp({content: `Train no. ${options.getString(opt)} is not in the tracking list.`, ephemeral: true});
         }
