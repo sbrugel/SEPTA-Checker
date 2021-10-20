@@ -6,6 +6,7 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const url = 'http://trainview.septa.org/';
+const json_url = 'http://www3.septa.org/hackathon/TrainView/';
 
 const client = new Discord.Client({ 
 	partials: ['MESSAGE', 'CHANNEL'],
@@ -53,10 +54,10 @@ client.on('interactionCreate', async interaction => {
 });
 
 async function main() {
-    const result = await rp.get(url);
-    const $ = cheerio.load(result);
+    var result = await rp.get(url);
+    var $ = cheerio.load(result);
 	
-	var iteration = 0, printstring = '', toPrint = [];
+	var iteration = 0, printstring = '', toPrint = [], trainOrder = [];
 	var run = 0; //increment through every cell of the table
 
 	$("table > tbody > tr > td").each((index, element) => { //run through every cell of the table
@@ -64,7 +65,8 @@ async function main() {
 		//iteration 0 is the origin station, which is unused for the purposes of this script
 		if (iteration == 1) { //train number
 			if (config.trains.indexOf($(element).text()) != -1) {
-				printstring = 'Train no. ' + config.trains[config.trains.indexOf($(element).text())] + ' going to ';
+				printstring = '**Train no. ' + config.trains[config.trains.indexOf($(element).text())] + ' going to ';
+				trainOrder.push(config.trains[config.trains.indexOf($(element).text())])
 			} else {
 				printstring = '';
 			}
@@ -83,6 +85,60 @@ async function main() {
 		}
 		run++;
     });
+
+	for (var i = 0; i < config.trains.length; i++) {
+		if (config.stations[i] != null) { //the train in question is being tracked at a valid station
+			result = await rp.get("http://trainview.septa.org/" + config.trains[i]);
+			$ = cheerio.load(result);
+			
+			iteration = 0;
+			run = 0; //increment through every cell of the table
+
+			var stationname = null, foundstation = false, donelooping = false;
+
+			$("table > tbody > tr > td").each((index, element) => { //run through every cell of the table
+				if (!donelooping) { //exit the loop if station has been found
+					iteration = run % 5; //0, 1, 2, 3, or 4
+					//we are only looking for iterations 0 and 3 (station name, estimated arrival)
+					if (iteration == 0) { //station name
+						if (config.stations[i].toLowerCase().includes($(element).text().toLowerCase())) {
+							foundstation = true;
+							stationname = $(element).text();
+						}
+					}
+					if (foundstation && iteration == 3) {
+						if ($(element).text() != ' ' && $(element).text() != '') {
+							toPrint[trainOrder.indexOf(config.trains[i])] += " (estimated to arrive at " + stationname + " at " + $(element).text() + ")";
+						}
+						donelooping = true;
+					}
+					run++;
+				}
+			});
+		}
+		result = await rp.get('http://www3.septa.org/hackathon/TrainView/');
+		$ = cheerio.load(result);
+		var jsondata = JSON.parse($('body').text());
+		var index = 0;
+		for (var j = 0; j < jsondata.length; j++) {
+			if (jsondata[j].trainno == config.trains[i]) {
+				index = j;
+			}
+		}
+		var traincoaches = jsondata[index].consist.split(',');
+		var trainlength = traincoaches.length;
+		var traintype = 'Default';
+		if (traincoaches[0].length == 4 || traincoaches[0][0] == '9') {
+			traintype = 'Loco-Hauled';
+		} else if (traincoaches[0][0] == '7' || traincoaches[0][0] == '8') {
+			traintype = 'Silverliner V';
+		} else if (traincoaches.length == 1) {
+			traintype = 'Coach data unavailable'
+		} else {
+			traintype = 'Silverliner IV'; // because these piles of garbage are unfortunately the most common :-(
+		}
+		toPrint[trainOrder.indexOf(config.trains[i])] += "** (Train is formed of " + trainlength + " coaches, " + traintype + ". Last at " + jsondata[index].currentstop + ".)";
+	}
 
 	var today = new Date();
 	var hr = convertTime(today.getHours()), min = convertTime(today.getMinutes()), sec = convertTime(today.getSeconds());
@@ -121,6 +177,20 @@ async function main() {
 			lm.edit({ embeds: [trainEmbed] });
 		}
 	})
+}
+
+function getJSON(url, callback) {
+    http.get(url, function(res) {
+        var body = '';
+        res.on('data', function(chunk) {
+            body += chunk;
+        });
+
+        res.on('end', function() {
+            var response = JSON.parse(body);
+            callback(response);
+        });
+    });
 }
 
 function convertTime(time) {

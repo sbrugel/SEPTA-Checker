@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { isOwner, updateConfig } = require('../utils/utils');
+const { isOwner, updateConfig, getPrintForEmbed } = require('../utils/utils');
 const config = require('../config.json');
 const { MessageEmbed } = require('discord.js');
 
@@ -25,14 +25,17 @@ module.exports = {
             return interaction.followUp({content: `Train no. ${options.getString(opt)} is already being tracked!`, ephemeral: true});
         } else {
             config.trains.push(options.getString(opt));
-            config.trains.sort(); //so it's in numerical order
+            config.stations.push(null); //add an empty station, can be replaced through addstation command
+            updateConfig(config);
+            
+            var toprint = getPrintForEmbed();
             const embed = new MessageEmbed()
                 .setTitle(`Added ${options.getString(opt)} to the tracker.`)
                 .setFooter('Your new train\'s status will appear the next time the information board refreshes.')
                 .setColor('GREEN')
                 .addField(
                     'Currently tracked trains',
-                    config.trains.join(', '),
+                    toprint.sort().join(', '),
                     false
                 );
             return interaction.followUp({
