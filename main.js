@@ -6,6 +6,7 @@ const rp = require('request-promise');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const url = 'http://trainview.septa.org/';
+const json_url = 'http://www3.septa.org/hackathon/TrainView/';
 
 const client = new Discord.Client({ 
 	partials: ['MESSAGE', 'CHANNEL'],
@@ -106,13 +107,25 @@ async function main() {
 						}
 					}
 					if (foundstation && iteration == 3) {
-						toPrint[trainOrder.indexOf(config.trains[i])] += " (estimated to arrive at " + stationname + " at: " + $(element).text() + ")";
+						if ($(element).text() != ' ' && $(element).text() != '') {
+							toPrint[trainOrder.indexOf(config.trains[i])] += " (estimated to arrive at " + stationname + " at " + $(element).text() + ")";
+						}
 						donelooping = true;
 					}
 					run++;
 				}
 			});
 		}
+		result = await rp.get('http://www3.septa.org/hackathon/TrainView/');
+		$ = cheerio.load(result);
+		var jsondata = JSON.parse($('body').text());
+		var index = 0;
+		for (var j = 0; j < jsondata.length; j++) {
+			if (jsondata[j].trainno == config.trains[i]) {
+				index = j;
+			}
+		}
+		toPrint[trainOrder.indexOf(config.trains[i])] += " (Train is formed of " + jsondata[index].consist + ". Last at " + jsondata[index].currentstop + ".)";
 	}
 
 	var today = new Date();
@@ -152,6 +165,20 @@ async function main() {
 			lm.edit({ embeds: [trainEmbed] });
 		}
 	})
+}
+
+function getJSON(url, callback) {
+    http.get(url, function(res) {
+        var body = '';
+        res.on('data', function(chunk) {
+            body += chunk;
+        });
+
+        res.on('end', function() {
+            var response = JSON.parse(body);
+            callback(response);
+        });
+    });
 }
 
 function convertTime(time) {
