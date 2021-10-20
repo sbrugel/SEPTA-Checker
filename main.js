@@ -65,7 +65,7 @@ async function main() {
 		//iteration 0 is the origin station, which is unused for the purposes of this script
 		if (iteration == 1) { //train number
 			if (config.trains.indexOf($(element).text()) != -1) {
-				printstring = 'Train no. ' + config.trains[config.trains.indexOf($(element).text())] + ' going to ';
+				printstring = '**Train no. ' + config.trains[config.trains.indexOf($(element).text())] + ' going to ';
 				trainOrder.push(config.trains[config.trains.indexOf($(element).text())])
 			} else {
 				printstring = '';
@@ -125,7 +125,19 @@ async function main() {
 				index = j;
 			}
 		}
-		toPrint[trainOrder.indexOf(config.trains[i])] += " (Train is formed of " + jsondata[index].consist + ". Last at " + jsondata[index].currentstop + ".)";
+		var traincoaches = jsondata[index].consist.split(',');
+		var trainlength = traincoaches.length;
+		var traintype = 'Default';
+		if (traincoaches[0].length == 4 || traincoaches[0][0] == '9') {
+			traintype = 'Loco-Hauled';
+		} else if (traincoaches[0][0] == '7' || traincoaches[0][0] == '8') {
+			traintype = 'Silverliner V';
+		} else if (traincoaches.length == 1) {
+			traintype = 'Coach data unavailable'
+		} else {
+			traintype = 'Silverliner IV'; // because these piles of garbage are unfortunately the most common :-(
+		}
+		toPrint[trainOrder.indexOf(config.trains[i])] += "** (Train is formed of " + trainlength + " coaches, " + traintype + ". Last at " + jsondata[index].currentstop + ".)";
 	}
 
 	var today = new Date();
