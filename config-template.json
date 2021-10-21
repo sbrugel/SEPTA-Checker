@@ -4,5 +4,7 @@
     "GUILD_ID": "YOUR_SERVER_ID",
     "NAME": "Silverliner IV",
     "SENDTO": "YOUR_CHANNEL_ID",
-    "trains": ["YOUR TRAINS HERE", "EACH SERVICE NUMBER", "SEPARATED BY COMMAS"]
+    "trains": ["YOUR TRAINS HERE", "EACH SERVICE NUMBER", "SEPARATED BY COMMAS"],
+    "stations": [],
+    "verboseConsists": false
 }
