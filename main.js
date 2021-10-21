@@ -116,7 +116,7 @@ async function main() {
 				}
 			});
 		}
-		result = await rp.get('http://www3.septa.org/hackathon/TrainView/');
+		result = await rp.get(json_url);
 		$ = cheerio.load(result);
 		var jsondata = JSON.parse($('body').text());
 		var index = 0;
