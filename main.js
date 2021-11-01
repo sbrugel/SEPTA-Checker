@@ -184,20 +184,6 @@ async function main() {
 	})
 }
 
-function getJSON(url, callback) {
-    http.get(url, function(res) {
-        var body = '';
-        res.on('data', function(chunk) {
-            body += chunk;
-        });
-
-        res.on('end', function() {
-            var response = JSON.parse(body);
-            callback(response);
-        });
-    });
-}
-
 function convertTime(time) {
 	if (time < 10) {
 		return "0" + time;
