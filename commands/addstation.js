@@ -51,7 +51,7 @@ module.exports = {
                         iteration = run % 5; //0, 1, 2, 3, or 4
                         //we are only looking for iterations 0 and 3 (station name, estimated arrival)
                         if (iteration == 0) { //station name
-                            if (options.getString(stationparam).toLowerCase().includes($(element).text().toLowerCase())) {
+                            if ($(element).text().toLowerCase().includes(options.getString(stationparam).toLowerCase())) {
                                 foundstation = true;
                             }
                         }
