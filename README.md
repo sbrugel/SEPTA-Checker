@@ -1,6 +1,3 @@
-# SEPTA-Checker
-This project is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.txt). This basically means you can redistribute this product with modification, for patent or private use, as long as you accredit all contributors and keep the license on your derivation of the project. You may NOT distribute the code as closed-source. Please follow the aforementioned link for more information.
-
 ## About
 ![Discord_U2Zsawo5Lm](https://user-images.githubusercontent.com/58154576/138178535-8f4f1ac3-ea68-4982-a1d2-9173d5599bcd.png)
 
