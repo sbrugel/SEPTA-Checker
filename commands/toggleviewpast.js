@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const config = require('../config.json');
 const { updateConfig } = require('../utils/utils');
 
-var name = 'toggleviewpast', desc = 'Toggle exclusion of trains from view list if they have left their associated station'
+let name = 'toggleviewpast', desc = 'Toggle exclusion of trains from view list if they have left their associated station'
 
 module.exports = {
 	data: new SlashCommandBuilder()

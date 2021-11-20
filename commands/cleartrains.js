@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { isOwner, updateConfig } = require('../utils/utils');
 const config = require('../config.json');
 
-var name = 'cleartrains', desc = 'Remove all tracked trains.'
+let name = 'cleartrains', desc = 'Remove all tracked trains.'
 
 module.exports = {
 	data: new SlashCommandBuilder()
