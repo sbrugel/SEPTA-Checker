@@ -71,7 +71,9 @@ async function main() {
 		iteration = run % 4; //0, 1, 2, or 3
 		//iteration 0 is the origin station, which is unused for the purposes of this script
 		if (iteration == 1) { //train number
-			if (config.trains.indexOf($(element).text()) != -1) {
+			if (config.trains.indexOf($(element).text()) != -1 || config.trains.indexOf($(element).text() + 'P') != -1) {
+				//for the latter condition, sometimes trains that are part-cancelled run only to/from Philadelphia
+				//and have a "P" appended to their train ID
 				printstring = '**Train no. ' + config.trains[config.trains.indexOf($(element).text())] + ' going to ';
 				trainOrder.push(config.trains[config.trains.indexOf($(element).text())])
 			} else {
@@ -132,18 +134,17 @@ async function main() {
 				index = j;
 			}
 		}
-		if (config.verboseConsists) { //full consist info
+		if (config.verboseConsists) {
 			if (jsondata[index].consist != '') {
 				toPrint[trainOrder.indexOf(config.trains[i])] += "** (Train is formed of " + jsondata[index].consist + ". Last at " + jsondata[index].currentstop + ".)";
 			} else {
 				toPrint[trainOrder.indexOf(config.trains[i])] += "** (No consist data is available. Last at " + jsondata[index].currentstop + ".)";
 			}
-		} else { //only train type and num. carriages
+		} else {
 			let traincoaches = jsondata[index].consist.split(',');
 			let trainlength = traincoaches.length;
 			let traintype = 'Default';
 			if (traincoaches[0].length == 4 || traincoaches[0][0] == '9') {
-				trainlength -= 1;
 				traintype = 'Loco-Hauled';
 			} else if (traincoaches[0][0] == '7' || traincoaches[0][0] == '8') {
 				traintype = 'Silverliner V';
@@ -192,6 +193,43 @@ async function main() {
 					.setDescription(String(toPrint.join('\n')))
 					.setFooter('This feed was last updated at: ' + time);
 			lm.edit({ embeds: [trainEmbed] });
+		}
+	})
+
+	//now to sort out alerts
+	result = await rp.get('http://www3.septa.org/hackathon/Alerts/');
+	$ = cheerio.load(result);
+	let jsondata = JSON.parse($('body').text());
+	toPrint = [];
+	for (let i = 0; i < config.alerts.length; i++) { //loop through all lines being tracked for alerts, etc.
+		for (let j = 0; j < jsondata.length; j++) {
+			if (jsondata[j].route_name == config.alerts[i]) {
+				toPrint.push(`**${jsondata[j].route_name}**: `);
+				if (jsondata[j].alert === '' && jsondata[j].advisory === '') {
+					toPrint.push("No alerts for this line.\n");
+				} else {
+					toPrint.push(jsondata[j].alert + " " + jsondata[j].advisory + "\n");
+				}
+			}
+		}
+	}
+	channel = guild.channels.cache.get(config.SEND_ALERTS_TO);
+	channel.messages.fetch({limit: 1}).then(messages => { //get only the last message sent
+		let lm = messages.first()
+		if (lm == null || !lm.author.bot) { //no message at all or last message not by bot
+			const alertEmbed = new MessageEmbed()
+				.setColor('#0099ff')
+				.setTitle('SEPTA Information Board')
+				.setDescription(String(toPrint.join('\n')))
+				.setFooter('This feed was last updated at: ' + time);
+			channel.send({ embeds: [alertEmbed] });
+		} else {
+			const alertEmbed = new MessageEmbed()
+				.setColor('#0099ff')
+				.setTitle('SEPTA Information Board')
+				.setDescription(String(toPrint.join('\n')))
+				.setFooter('This feed was last updated at: ' + time);
+			lm.edit({ embeds: [alertEmbed] });
 		}
 	})
 }
