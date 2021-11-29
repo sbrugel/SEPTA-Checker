@@ -4,7 +4,7 @@ const config = require('../config.json');
 const rp = require('request-promise');
 const cheerio = require('cheerio');
 
-var name = 'addstation', desc = 'For a train being tracked, add a station to check the estimated arrival time for.' , trainparam = 'train', optdesc = 'Check the estimated arrival time for this train number at the station specified in the command.',
+let name = 'addstation', desc = 'For a train being tracked, add a station to check the estimated arrival time for.' , trainparam = 'train', optdesc = 'Check the estimated arrival time for this train number at the station specified in the command.',
 stationparam = 'station', optdesc2 = 'The station to add to this train.'
 
 module.exports = {
@@ -36,16 +36,16 @@ module.exports = {
         } else if (options.getString(stationparam).length < 4) { //too short of a name, thus too vague
             return interaction.followUp({content: `The station name you have entered is too short. Please enter a name that is 4 characters or longer.`, ephemeral: true});
         } else {
-            for (var i = 0; i < config.trains.length; i++) { //find the train number in the trains list
+            for (let i = 0; i < config.trains.length; i++) { //find the train number in the trains list
                 if (config.trains[i] == options.getString(trainparam)) {
-                    var url = "http://trainview.septa.org/" + options.getString(trainparam);
+                    let url = "http://trainview.septa.org/" + options.getString(trainparam);
                     const result = await rp.get(url);
                     const $ = cheerio.load(result);
                     
-                    var iteration = 0;
-                    var run = 0; //increment through every cell of the table
+                    let iteration = 0;
+                    let run = 0; //increment through every cell of the table
 
-                    var foundstation = false;
+                    let foundstation = false;
 
                     $("table > tbody > tr > td").each((index, element) => { //run through every cell of the table
                         iteration = run % 5; //0, 1, 2, 3, or 4

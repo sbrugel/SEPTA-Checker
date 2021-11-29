@@ -6,5 +6,6 @@
     "SENDTO": "YOUR_CHANNEL_ID",
     "trains": ["YOUR TRAINS HERE", "EACH SERVICE NUMBER", "SEPARATED BY COMMAS"],
     "stations": [],
-    "verboseConsists": false
+    "verboseConsists": false,
+    "viewpast": true
 }

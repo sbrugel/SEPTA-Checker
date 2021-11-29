@@ -3,7 +3,7 @@ const { isOwner, updateConfig, getPrintForEmbed } = require('../utils/utils');
 const config = require('../config.json');
 const { MessageEmbed } = require('discord.js');
 
-var name = 'addtrain', desc = 'Add a train to the tracker.', opt = 'toadd', optdesc = 'The train to add'
+let name = 'addtrain', desc = 'Add a train to the tracker.', opt = 'toadd', optdesc = 'The train to add'
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -28,7 +28,7 @@ module.exports = {
             config.stations.push(null); //add an empty station, can be replaced through addstation command
             updateConfig(config);
             
-            var toprint = getPrintForEmbed();
+            let toprint = getPrintForEmbed();
             const embed = new MessageEmbed()
                 .setTitle(`Added ${options.getString(opt)} to the tracker.`)
                 .setFooter('Your new train\'s status will appear the next time the information board refreshes.')
