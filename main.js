@@ -54,11 +54,11 @@ client.on('interactionCreate', async interaction => {
 });
 
 async function main() {
-    var result = await rp.get(url);
-    var $ = cheerio.load(result);
+    let result = await rp.get(url);
+    let $ = cheerio.load(result);
 	
-	var iteration = 0, printstring = '', toPrint = [], trainOrder = [];
-	var run = 0; //increment through every cell of the table
+	let iteration = 0, printstring = '', toPrint = [], trainOrder = [];
+	let run = 0; //increment through every cell of the table
 
 	$("table > tbody > tr > td").each((index, element) => { //run through every cell of the table
 		iteration = run % 4; //0, 1, 2, or 3
@@ -86,7 +86,7 @@ async function main() {
 		run++;
     });
 
-	for (var i = 0; i < config.trains.length; i++) {
+	for (let i = 0; i < config.trains.length; i++) {
 		if (config.stations[i] != null) { //the train in question is being tracked at a valid station
 			result = await rp.get("http://trainview.septa.org/" + config.trains[i]);
 			$ = cheerio.load(result);
@@ -94,7 +94,7 @@ async function main() {
 			iteration = 0;
 			run = 0; //increment through every cell of the table
 
-			var stationname = null, foundstation = false, donelooping = false;
+			let stationname = null, foundstation = false, donelooping = false;
 
 			$("table > tbody > tr > td").each((index, element) => { //run through every cell of the table
 				if (!donelooping) { //exit the loop if station has been found
@@ -118,9 +118,9 @@ async function main() {
 		}
 		result = await rp.get(json_url);
 		$ = cheerio.load(result);
-		var jsondata = JSON.parse($('body').text());
-		var index = 0;
-		for (var j = 0; j < jsondata.length; j++) {
+		let jsondata = JSON.parse($('body').text());
+		let index = 0;
+		for (let j = 0; j < jsondata.length; j++) {
 			if (jsondata[j].trainno == config.trains[i]) {
 				index = j;
 			}
@@ -128,9 +128,9 @@ async function main() {
 		if (config.verboseConsists) {
 			toPrint[trainOrder.indexOf(config.trains[i])] += "** (Train is formed of " + jsondata[index].consist + ". Last at " + jsondata[index].currentstop + ".)";
 		} else {
-			var traincoaches = jsondata[index].consist.split(',');
-			var trainlength = traincoaches.length;
-			var traintype = 'Default';
+			let traincoaches = jsondata[index].consist.split(',');
+			let trainlength = traincoaches.length;
+			let traintype = 'Default';
 			if (traincoaches[0].length == 4 || traincoaches[0][0] == '9') {
 				traintype = 'Loco-Hauled';
 			} else if (traincoaches[0][0] == '7' || traincoaches[0][0] == '8') {
@@ -145,9 +145,9 @@ async function main() {
 		
 	}
 
-	var today = new Date();
-	var hr = convertTime(today.getHours()), min = convertTime(today.getMinutes()), sec = convertTime(today.getSeconds());
-	var time = hr + ":" + min + ":" + sec;
+	let today = new Date();
+	let hr = convertTime(today.getHours()), min = convertTime(today.getMinutes()), sec = convertTime(today.getSeconds());
+	let time = hr + ":" + min + ":" + sec;
 	
 	for (let i = 0; i < toPrint.length; i++) { //add a new line for every train info
 		toPrint[i] += '\n';

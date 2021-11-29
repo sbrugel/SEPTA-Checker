@@ -19,8 +19,8 @@ module.exports = {
 	},
 
 	getPrintForEmbed() {
-		var toprint = [];
-		for (var i = 0; i < config.trains.length; i++) {
+		let toprint = [];
+		for (let i = 0; i < config.trains.length; i++) {
 			if (config.stations[i] != null) { //a valid station is also being tracked for this train
 				toprint.push(config.trains[i] + ' (ETA is being tracked at ' + config.stations[i] + ')');
 			} else {
