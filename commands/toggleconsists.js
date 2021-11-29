@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const config = require('../config.json');
 
-var name = 'toggleconsists', desc = 'For each train, switch between general consist info and exact car numbers'
+let name = 'toggleconsists', desc = 'For each train, switch between general consist info and exact car numbers'
 
 module.exports = {
 	data: new SlashCommandBuilder()

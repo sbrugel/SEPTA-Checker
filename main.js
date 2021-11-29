@@ -27,6 +27,13 @@ for (const file of commandFiles) {
 client.login(config.TOKEN);
 
 client.once('ready', () => {
+	if (config.trains.length > config.stations.length) {
+		config.stations = [];
+		for (let i = 0; i < config.trains.length; i++) {
+			config.stations.push(null);
+		}
+		updateConfig(config);
+	}
 	console.log('ready!');
 	main(); //this just instantly updates the embed on launch
     let job = new cron.CronJob('*/2 * * * *', main); //update at every even minute of the hour - approximately every 2 minutes
@@ -125,13 +132,18 @@ async function main() {
 				index = j;
 			}
 		}
-		if (config.verboseConsists) {
-			toPrint[trainOrder.indexOf(config.trains[i])] += "** (Train is formed of " + jsondata[index].consist + ". Last at " + jsondata[index].currentstop + ".)";
-		} else {
+		if (config.verboseConsists) { //full consist info
+			if (jsondata[index].consist != '') {
+				toPrint[trainOrder.indexOf(config.trains[i])] += "** (Train is formed of " + jsondata[index].consist + ". Last at " + jsondata[index].currentstop + ".)";
+			} else {
+				toPrint[trainOrder.indexOf(config.trains[i])] += "** (No consist data is available. Last at " + jsondata[index].currentstop + ".)";
+			}
+		} else { //only train type and num. carriages
 			let traincoaches = jsondata[index].consist.split(',');
 			let trainlength = traincoaches.length;
 			let traintype = 'Default';
 			if (traincoaches[0].length == 4 || traincoaches[0][0] == '9') {
+				trainlength -= 1;
 				traintype = 'Loco-Hauled';
 			} else if (traincoaches[0][0] == '7' || traincoaches[0][0] == '8') {
 				traintype = 'Silverliner V';

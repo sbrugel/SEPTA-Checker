@@ -3,7 +3,7 @@ const { isOwner, updateConfig, getPrintForEmbed } = require('../utils/utils');
 const config = require('../config.json');
 const { MessageEmbed } = require('discord.js');
 
-var name = 'removetrain', desc = 'Remove a train from the tracker.', opt = 'toremove', optdesc = 'The train to remove'
+let name = 'removetrain', desc = 'Remove a train from the tracker.', opt = 'toremove', optdesc = 'The train to remove'
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -22,13 +22,13 @@ module.exports = {
 
         const { options } = interaction
         if (config.trains.includes(options.getString(opt))) {
-            var toremove = config.trains.indexOf(options.getString(opt));
+            let toremove = config.trains.indexOf(options.getString(opt));
             config.trains.splice(toremove, 1);
             config.stations.splice(toremove, 1);
             updateConfig(config);
 
             try {
-                var toprint = getPrintForEmbed();
+                let toprint = getPrintForEmbed();
                 const embed = new MessageEmbed()
                     .setTitle(`${options.getString(opt)} has been removed from the tracking list.`)
                     .setFooter('This update will be visible the next time the information board refreshes.')
@@ -43,7 +43,7 @@ module.exports = {
                     ephemeral: true
                 });
             } catch (error) {
-                var toprint = getPrintForEmbed();
+                let toprint = getPrintForEmbed();
                 const embed = new MessageEmbed()
                     .setTitle(`${options.getString(opt)} has been removed from the tracking list.`)
                     .setDescription(`The list is now empty.`)
