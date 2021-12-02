@@ -3,7 +3,7 @@ const { isOwner, updateConfig, getPrintForEmbed } = require('../utils/utils');
 const config = require('../config.json');
 const { MessageEmbed } = require('discord.js');
 
-let name = 'untrackalerts', desc = 'Stop tracking alerts for a line', opt = 'toadd', optdesc = 'The line to remove'
+let name = 'untrackalerts', desc = 'Stop tracking alerts for a line', opt = 'toremove', optdesc = 'The line to remove'
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -67,15 +67,15 @@ module.exports = {
 			updateConfig(config);
 
             const embed = new MessageEmbed()
-                .setTitle(`Removed ${lineToCheck} to the tracker.`)
-                .setFooter('This line\'s will appear the next time the information board refreshes.')
+                .setTitle(`Removed ${lineToCheck} from the tracker.`)
+                .setFooter('This line\'s will not appear the next time the information board refreshes.')
                 .setColor('RED')
             return interaction.followUp({
                 embeds: [embed],
                 ephemeral: true
             });
         } else {
-			return interaction.followUp({content: `Alerts on ${lineToCheck} is not being tracked!`, ephemeral: true});
+			return interaction.followUp({content: `Alerts on ${lineToCheck} are not being tracked!`, ephemeral: true});
         }
 	},
 };
