@@ -213,22 +213,61 @@ async function main() {
 			}
 		}
 	}
+	let embedPrint = toPrint.join('\n'); //the precise string to print in the embed; this will remove all HTML tags from the alerts
+
+	//replace the easy tags first
+	embedPrint = replaceAll(embedPrint, "<h3 class=\"separated\">", "**");
+    embedPrint = replaceAll(embedPrint, "</h3>", ":** ");
+    embedPrint = replaceAll(embedPrint, "<p class=\"desc separated\">", "");
+    embedPrint = replaceAll(embedPrint, "</p>", " ");
+    embedPrint = replaceAll(embedPrint, "<p>", "");
+    embedPrint = replaceAll(embedPrint, "<strong>", "**");
+    embedPrint = replaceAll(embedPrint, "</strong>", "**");
+    embedPrint = replaceAll(embedPrint, "<em>", "*");
+    embedPrint = replaceAll(embedPrint, "</em>", "*");
+
+	//handle images
+	let imgtags = (embedPrint.match(/<img/g) || []).length;
+	let imgurl = "X";
+    if (imgtags > 0) { //img tag present
+        let start = getPosition(embedPrint, "<img", 1); //first image tag
+        let linkstart = 0, linkend = 0;
+        for (let j = start; j < embedPrint.length; j++) {
+            if (embedPrint[j] === "h") { //start of 'https'
+                linkstart = j;
+                break;
+            }
+        }
+        for (let j = linkstart; j < embedPrint.length; j++) {
+            if (embedPrint[j] === "\"") { //endquote of link
+                linkend = j;
+                break;
+            }
+        }
+        imgurl = embedPrint.substring(linkstart, linkend);
+    }
+
 	channel = guild.channels.cache.get(config.SEND_ALERTS_TO);
 	channel.messages.fetch({limit: 1}).then(messages => { //get only the last message sent
 		let lm = messages.first()
-		if (lm == null || !lm.author.bot) { //no message at all or last message not by bot
-			const alertEmbed = new MessageEmbed()
+		let alertEmbed;
+		if (imgurl === 'NA') { //no image
+			alertEmbed = new MessageEmbed()
 				.setColor('#0099ff')
 				.setTitle('SEPTA Information Board')
-				.setDescription(String(toPrint.join('\n')))
+				.setDescription(String(embedPrint))
 				.setFooter('This feed was last updated at: ' + time);
+		} else {
+			alertEmbed = new MessageEmbed()
+				.setColor('#0099ff')
+				.setTitle('SEPTA Information Board')
+				.setDescription(String(embedPrint))
+				.setImage(imgurl)
+				.setFooter('This feed was last updated at: ' + time);
+		}
+		if (lm == null || !lm.author.bot) { //no message at all or last message not by bot
 			channel.send({ embeds: [alertEmbed] });
 		} else {
-			const alertEmbed = new MessageEmbed()
-				.setColor('#0099ff')
-				.setTitle('SEPTA Information Board')
-				.setDescription(String(toPrint.join('\n')))
-				.setFooter('This feed was last updated at: ' + time);
 			lm.edit({ embeds: [alertEmbed] });
 		}
 	})
@@ -239,4 +278,12 @@ function convertTime(time) {
 		return "0" + time;
 	}
 	return time;
+}
+
+function getPosition(string, subString, index) {
+    return string.split(subString, index).join(subString).length;
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
 }
