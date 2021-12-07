@@ -1,7 +1,7 @@
 ## About
 ![Discord_U2Zsawo5Lm](https://user-images.githubusercontent.com/58154576/138178535-8f4f1ac3-ea68-4982-a1d2-9173d5599bcd.png)
 
-This is a Discord bot that scrapes the SEPTA API at regular intervals and returns delays, last recorded location, and train consist information for user-inputted train services (3 or 4 digit numbers) in the form of a rich embed. Its feed updates automatically every two minutes.
+This is a Discord bot that scrapes the SEPTA API at regular intervals and returns delays, last recorded location, and train consist information for user-inputted train services (3 or 4 digit numbers) in the form of a rich embed. It also regularly updates users on alerts/advisories for regional rail lines. Its feed updates automatically every two minutes.
 
 The bot can optionally also track the estimated arrival time of tracked trains at a certain station, specified by the user, using the /addstation command.
 
@@ -53,12 +53,28 @@ Parameters
 - [train] is the train number to add the station to. This MUST be a train already being tracked.
 - [station] is the station to track the ETA of this train for. This MUST be a station the [train] serves. *Please note that this also accounts for punctuation in the name. (See the below section for more info)*
 
+### /trackalerts [line]
+Adds a regional rail line to the alerts/advisories tracker, if the line specified is valid. (E.g. adding "Thorndale" as the argument will result in the Paoli/Thorndale line being tracked)
+
+### /untrackalerts [line]
+If the line specified is being tracked for alerts/advisories, stop tracking this line.
+
+### (WIP) /query [train]
+This will get the current status of a train *without* adding it to the tracker.
+
+Parameters: [train] is the train number to grab data from.
+
 ## Stations for Trains
 One core feature of this bot is that for any train being tracked, the estimated arrival time at a user-specified station can also be tracked. This command is described in detail above. However, one thing to be noted is that shortened station names (for some stations) CAN be used and do work.
 
 As an example, entering "30th St" as the station parameter for a train will track the train's ETA at 30th Street Station. Additionally, typing in just "Temple" for the station will track the train's ETA at Temple University. However, it is always best to type in as full of the station name as possible to avoid ambiguity.
 
 HOWEVER, proper punctuation for the station is required for the station to be detected and tracked. For example, "St Davids" will not be found as a valid station if the train serves St. Davids.
+
+## Alerts Tracking
+![Discord_WsSDYKqb64](https://user-images.githubusercontent.com/58154576/145028502-8668605c-0cdd-400d-b057-bea1455f4240.png)
+
+Currently a WIP feature. This is a separate embed that displays alerts/advisories for regional rail lines, if there are any. There is a separate entry in the config-template file that corresponds to the channel ID where the alert information will be sent. ***This should be different from the TOSEND channel ID.*** Like delay info, alerts update every 2 minutes.
 
 ## Utilized Libraries
 - [discord.js](https://discord.js.org/#/)
