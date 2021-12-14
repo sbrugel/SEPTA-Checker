@@ -228,7 +228,7 @@ async function main() {
 
 	//handle images
 	let imgtags = (embedPrint.match(/<img/g) || []).length;
-	let imgurl = "X";
+	let imgurl = "NA";
     if (imgtags > 0) { //img tag present
         let start = getPosition(embedPrint, "<img", 1); //first image tag
         let linkstart = 0, linkend = 0;
