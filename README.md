@@ -37,8 +37,13 @@ Parameters: [train] is the train number of the service to be removed. This MUST 
 ### /cleartrains
 This will remove every train that is currently in the tracker, as well as all associated stations.
 
+### /query
+Returns the delay/consist/location information for the train the user specifies.
+
+Parameters: [train] is the train number whose data will be returned. **This doesn't have to be a train that is being tracked by the bot, but it must be a valid train number and a train that is currently running.**
+
 ### /refresh
-Forces a refresh of the SEPTA Information Board. *This will take a few seconds to update.*
+Forces a refresh of the SEPTA Information Board.
 
 ### /toggleconsists
 Switches between full consist information (i.e. specific car numbers) and basic consist information (# of coaches, train type) being displayed.
@@ -84,6 +89,6 @@ Currently a WIP feature. This is a separate embed that displays alerts/advisorie
 - request-promise (currently deprecated, a future update will replace this with a more up-to-date library)
 
 ## Acknowledgements
-Massive thanks to the team behind [SageV2](https://github.com/ud-cis-discord/SageV2) for their continued assistance and encouragement for development.
+Massive thanks to Ben Segal/Josh Lyon for their continued assistance and encouragement for development.
 
 Got any bugs to report? Feature suggestions? Toss them in the issues section.
