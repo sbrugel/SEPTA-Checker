@@ -38,7 +38,7 @@ Parameters: [train] is the train number of the service to be removed. This MUST 
 This will remove every train that is currently in the tracker, as well as all associated stations.
 
 ### /query
-Returns the delay/consist/location information for the train the user specifies.
+Returns the delay/consist/location information for the train the user specifies. *This does not add the train to the tracker*
 
 Parameters: [train] is the train number whose data will be returned. **This doesn't have to be a train that is being tracked by the bot, but it must be a valid train number and a train that is currently running.**
 
@@ -63,11 +63,6 @@ Adds a regional rail line to the alerts/advisories tracker, if the line specifie
 
 ### /untrackalerts [line]
 If the line specified is being tracked for alerts/advisories, stop tracking this line.
-
-### (WIP) /query [train]
-This will get the current status of a train *without* adding it to the tracker.
-
-Parameters: [train] is the train number to grab data from.
 
 ## Stations for Trains
 One core feature of this bot is that for any train being tracked, the estimated arrival time at a user-specified station can also be tracked. This command is described in detail above. However, one thing to be noted is that shortened station names (for some stations) CAN be used and do work.
