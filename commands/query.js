@@ -30,7 +30,6 @@ module.exports = {
                 //iteration 0 is the origin station, which is unused for the purposes of this script
                 if (iteration == 1) { //train number
                     if ($(element).text() === interaction.options.getString('search') || ($(element).text() + 'P') === (interaction.options.getString('search') + 'P')) {
-                        console.log('true');
                         //for the latter condition, sometimes trains that are part-cancelled run only to/from Philadelphia
                         //and have a "P" appended to their train ID
                         printstring = '**Train no. ' + interaction.options.getString('search') + ' going to ';
@@ -44,9 +43,9 @@ module.exports = {
                     }
                     else if (iteration == 3) { //delay
                         printstring += $(element).text();
+                        loopend = true;
                         if ($(element).text() != 'On Time') {
                             printstring += ' late';
-                            loopend = true;
                         }
                     }
                 }
